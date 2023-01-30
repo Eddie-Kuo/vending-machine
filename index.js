@@ -1,5 +1,7 @@
 // accepts an item's cost and the payment as input -> output how mush change is returned
+const { get } = require('https');
 const process = require('process');
+const { resourceLimits } = require('worker_threads');
 
 // console.log(process.argv);
 let itemCostInput = null;
@@ -46,10 +48,19 @@ function getChange(cost, payment) {
     // the currentValue needed to be reassigned after the first run on the reducer
     return acc;
   }, {});
-  return receipt;
+  const arr = Object.values(receipt);
+  let newObj = {};
+  const coinNames = ['Pennies', 'Nickels', 'Dimes', 'Quarters'];
+  for (let i = 0; i < coinNames.length; ++i) {
+    newObj[coinNames[i]] = arr[i];
+  }
+  const result = Object.entries(newObj);
+  const finalAnswer = result.map((entry) => entry.join(': '));
+  return finalAnswer.join(', ');
 }
+
 getChange();
-// console.log(getChange(155, 168));
+console.log(getChange(155, 168));
 
 module.exports = {
   getChange,
