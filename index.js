@@ -40,6 +40,7 @@ if (isNaN(payment)) {
 }
 
 function getChange(cost, payment) {
+  const initialChange = payment - cost;
   let change = payment - cost;
   const coins = [25, 10, 5, 1];
   const receipt = coins.reduce((acc, curr) => {
@@ -55,8 +56,11 @@ function getChange(cost, payment) {
     newObj[coinNames[i]] = arr[i];
   }
   const result = Object.entries(newObj);
-  const finalAnswer = result.map((entry) => entry.join(': '));
-  return finalAnswer.join(', ');
+  const givenChange = result.map((entry) => entry.join(': '));
+  const finalAnswer = givenChange.reverse();
+  // console.log(initialChange);
+  return `${finalAnswer.join('\r\n')} 
+Total Change: ${initialChange} cents`;
 }
 
 getChange();
